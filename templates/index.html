@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>🔒 SecureVault</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+                background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+                color: #f0f6fc;
+                min-height: 100vh;
+                padding: 2rem 1rem;
+            }
+            
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background: rgba(22, 27, 34, 0.8);
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                overflow: hidden;
+            }
+            
+            .header {
+                background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+                padding: 2rem;
+                text-align: center;
+                color: white;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+                opacity: 0.9;
+            }
+            
+            .content {
+                padding: 2rem;
+            }
+            
+            .upload-section {
+                background: rgba(13, 17, 23, 0.5);
+                border-radius: 16px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .upload-section h2 {
+                color: #58a6ff;
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: #f0f6fc;
+            }
+            
+            .form-group input {
+                width: 100%;
+                background: rgba(13, 17, 23, 0.8);
+                color: #f0f6fc;
+                border: 2px solid #30363d;
+                border-radius: 12px;
+                padding: 1rem;
+                font-size: 1rem;
+                outline: none;
+                transition: all 0.3s ease;
+            }
+            
+            .form-group input:focus {
+                border-color: #58a6ff;
+                box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+            }
+            
+            .file-input-wrapper {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+            }
+            
+            .file-input-wrapper input[type="file"] {
+                position: absolute;
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+            
+            .file-input-display {
+                background: rgba(13, 17, 23, 0.8);
+                border: 2px dashed #30363d;
+                border-radius: 12px;
+                padding: 2rem;
+                text-align: center;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            
+            .file-input-display:hover {
+                border-color: #58a6ff;
+                background: rgba(88, 166, 255, 0.05);
+            }
+            
+            .file-input-display i {
+                font-size: 2rem;
+                color: #58a6ff;
+                margin-bottom: 1rem;
+            }
+            
+            .file-input-display p {
+                color: #8b949e;
+                font-size: 1rem;
+            }
+            
+            .btn {
+                background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+                border: none;
+                padding: 1rem 2rem;
+                color: white;
+                font-size: 1rem;
+                font-weight: 600;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                text-decoration: none;
+                box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+            }
+            
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
+            }
+            
+            .btn:active {
+                transform: translateY(0);
+            }
+            
+            .btn-secondary {
+                background: linear-gradient(135deg, #6e7681 0%, #8b949e 100%);
+                box-shadow: 0 4px 12px rgba(110, 118, 129, 0.3);
+            }
+            
+            .btn-secondary:hover {
+                box-shadow: 0 6px 20px rgba(110, 118, 129, 0.4);
+            }
+            
+            .files-section {
+                background: rgba(13, 17, 23, 0.5);
+                border-radius: 16px;
+                padding: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .files-section h2 {
+                color: #58a6ff;
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .files-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 1rem;
+            }
+            
+            .file-card {
+                background: rgba(13, 17, 23, 0.8);
+                border-radius: 12px;
+                padding: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .file-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+                border-color: #58a6ff;
+            }
+            
+            .file-name {
+                font-weight: 600;
+                color: #f0f6fc;
+                margin-bottom: 0.5rem;
+                word-break: break-all;
+            }
+            
+            .file-meta {
+                font-size: 0.9rem;
+                color: #8b949e;
+                margin-bottom: 1rem;
+            }
+            
+            .file-actions {
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            .btn-small {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .alert {
+                padding: 1rem;
+                border-radius: 12px;
+                margin-bottom: 1.5rem;
+                border-left: 4px solid;
+            }
+            
+            .alert-success {
+                background: rgba(35, 134, 54, 0.1);
+                border-color: #238636;
+                color: #56d364;
+            }
+            
+            .alert-error {
+                background: rgba(248, 81, 73, 0.1);
+                border-color: #f85149;
+                color: #ff7b72;
+            }
+            
+            .stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .stat-card {
+                background: rgba(13, 17, 23, 0.5);
+                border-radius: 12px;
+                padding: 1.5rem;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #58a6ff;
+                margin-bottom: 0.5rem;
+            }
+            
+            .stat-label {
+                color: #8b949e;
+                font-size: 0.9rem;
+            }
+            
+            .footer {
+                text-align: center;
+                padding: 2rem;
+                color: #8b949e;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .loading {
+                display: none;
+                text-align: center;
+                padding: 2rem;
+            }
+            
+            .spinner {
+                border: 3px solid rgba(88, 166, 255, 0.3);
+                border-top: 3px solid #58a6ff;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            @media (max-width: 768px) {
+                .container {
+                    margin: 0;
+                    border-radius: 0;
+                }
+                
+                .header h1 {
+                    font-size: 2rem;
+                }
+                
+                .content {
+                    padding: 1rem;
+                }
+                
+                .upload-section, .files-section {
+                    padding: 1.5rem;
+                }
+                
+                .files-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-shield-alt"></i> SecureVault</h1>
+                <p>Encrypt and store your files with military-grade security</p>
+            </div>
+            
+            <div class="content">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                                <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- Statistics -->
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ files|length }}</div>
+                        <div class="stat-label">Files Stored</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ files|sum(attribute='size') // (1024*1024) }}</div>
+                        <div class="stat-label">Total Size (MB)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">AES-256</div>
+                        <div class="stat-label">Encryption</div>
+                    </div>
+                </div>
+                
+                <!-- Upload Section -->
+                <div class="upload-section">
+                    <h2><i class="fas fa-upload"></i> Upload & Encrypt File</h2>
+                    
+                    <form method="post" enctype="multipart/form-data" id="uploadForm">
+                        <div class="form-group">
+                            <label for="file">Select File</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" name="file" id="file" required />
+                                <div class="file-input-display" onclick="document.getElementById('file').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Click to select a file or drag and drop</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="custom_name">File Name</label>
+                            <input 
+                                type="text" 
+                                name="custom_name" 
+                                id="custom_name"
+                                placeholder="Enter a name for your file" 
+                                required 
+                            />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Encryption Password</label>
+                            <input 
+                                type="password" 
+                                name="password" 
+                                id="password"
+                                placeholder="Enter a strong password" 
+                                required 
+                            />
+                            <small style="color: #8b949e; font-size: 0.8rem; margin-top: 0.5rem; display: block;">
+                                Password must be at least 8 characters with uppercase, lowercase, and numbers
+                            </small>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-lock"></i>
+                            Encrypt & Store File
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Files Section -->
+                <div class="files-section">
+                    <h2><i class="fas fa-folder"></i> Stored Files</h2>
+                    
+                    {% if files %}
+                        <div class="files-grid">
+                            {% for file in files %}
+                                <div class="file-card">
+                                    <div class="file-name">
+                                        <i class="fas fa-file"></i>
+                                        {{ file.name.replace('.enc', '') }}
+                                    </div>
+                                    <div class="file-meta">
+                                        <div><i class="fas fa-weight-hanging"></i> {{ (file.size / 1024) | round(1) }} KB</div>
+                                        <div><i class="fas fa-calendar"></i> {{ file.modified[:10] }}</div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <a href="{{ url_for('download', fname=file.name) }}" class="btn btn-small">
+                                            <i class="fas fa-download"></i>
+                                            Download
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div style="text-align: center; padding: 3rem; color: #8b949e;">
+                            <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <p>No files stored yet. Upload your first file above!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>Made with <i class="fas fa-heart" style="color: #f85149;"></i> by Chetanya</p>
+                <p style="font-size: 0.8rem; margin-top: 0.5rem;">
+                    <i class="fas fa-shield-alt"></i> 
+                    Military-grade AES-256 encryption with PBKDF2 key derivation
+                </p>
+            </div>
+        </div>
+        
+        <script>
+            // File input handling
+            document.getElementById('file').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                const display = document.querySelector('.file-input-display');
+                
+                if (file) {
+                    display.innerHTML = `
+                        <i class="fas fa-file"></i>
+                        <p><strong>${file.name}</strong></p>
+                        <p style="font-size: 0.9rem;">${(file.size / 1024).toFixed(1)} KB</p>
+                    `;
+                }
+            });
+            
+            // Form submission with loading state
+            document.getElementById('uploadForm').addEventListener('submit', function() {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Encrypting...';
+                submitBtn.disabled = true;
+            });
+            
+            // Password strength indicator
+            document.getElementById('password').addEventListener('input', function() {
+                const password = this.value;
+                const strength = calculatePasswordStrength(password);
+                
+                // You could add a visual strength indicator here
+            });
+            
+            function calculatePasswordStrength(password) {
+                let score = 0;
+                if (password.length >= 8) score++;
+                if (/[a-z]/.test(password)) score++;
+                if (/[A-Z]/.test(password)) score++;
+                if (/[0-9]/.test(password)) score++;
+                if (/[^A-Za-z0-9]/.test(password)) score++;
+                return score;
+            }
+        </script>
+    </body>
+</html>
