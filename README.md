@@ -35,6 +35,16 @@ A professional, enterprise-grade file encryption and storage system built with F
 
 ### Quick Start
 
+
+
+ **Quick Deployment Using Script**
+   ```bash
+   git clone https://github.com/ChetanyaGarg/SecureVault.git
+   cd SecureVault
+   ./deploy.sh
+   #and you are ready to go ;)
+   ```
+
 1. **Clone or download the project**
    ```bash
    git clone https://github.com/ChetanyaGarg/SecureVault.git
