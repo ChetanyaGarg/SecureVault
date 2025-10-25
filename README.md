@@ -38,7 +38,7 @@ A professional, enterprise-grade file encryption and storage system built with F
 1. **Clone or download the project**
    ```bash
    git clone https://github.com/ChetanyaGarg/SecureVault.git
-   cd secure-file-storage
+   cd SecureVault
    ```
 
 2. **Install dependencies**
